@@ -1,8 +1,6 @@
 ﻿
 using System.CommandLine;
-using System.CommandLine.Invocation;
-//using System.CommandLine.Invocation;
-using System.Text.RegularExpressions;
+
 
 var rootCommand = new RootCommand("A tool to bundle the contents of a few files into one file");
 
@@ -133,11 +131,9 @@ var createRspCommand = new Command("create-rsp", "Create a response file for bun
 createRspCommand.AddAlias("c-rsp");
 createRspCommand.SetHandler(() =>
 {
-    // Ask for output file
     Console.Write("Enter output file name (e.g., bundle.txt): ");
     var output = Console.ReadLine();
 
-    // Ask for languages
     Console.Write("Enter programming languages (from: (csharp, python, java, javascript, cpp, html, css, typescript ), or 'all'): ");
     var languagesInput = Console.ReadLine();
 
@@ -148,33 +144,21 @@ createRspCommand.SetHandler(() =>
     }
     var languages = languagesInput.Split(',').Select(l => l.Trim().ToLower()).ToArray();
 
-    // Ask if empty lines should be removed
     Console.Write("Remove empty lines? (y/n): ");
     var removeEmptyLinesInput = Console.ReadLine();
     var removeEmptyLines = removeEmptyLinesInput?.Trim().ToLower() == "y";
 
-    // Ask for author
     Console.Write("Enter author name (optional): ");
     var author = Console.ReadLine();
 
-    // Ask for sort option
     Console.Write("Sort files by (name/type) [default: name]: ");
     var sortOption = Console.ReadLine()?.Trim().ToLower();
     if (string.IsNullOrWhiteSpace(sortOption)) sortOption = "name";
 
-    // Ask if to include source notes
     Console.Write("Include source notes? (y/n): ");
     var includeSourceNotesInput = Console.ReadLine();
     var includeSourceNotes = includeSourceNotesInput?.Trim().ToLower() == "y";
 
-    // Validate and sanitize the inputs
-    //if (languages.Length == 0)
-    //{
-    //    Console.WriteLine("You must specify at least one programming language.");
-    //    return;
-    //}
-
-    // Create the response file content
     var rspContent = new List<string>
     {
         "bundle ",
